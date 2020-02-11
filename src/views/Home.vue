@@ -1,18 +1,51 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+    <li v-for="answer in newAnswer" v-bind:key="answer">{{newAnswer.answer}}</li>
+    <form @submit.prevent="addAnswer">
+    <input type="text" v-model="newAnswer.answers">
+    <input type="text" v-model="newAnswer.answersPerDay">
+    <input type="text" v-model="newAnswer.questions">
+    <input type="text" v-model="newAnswer.studyEvents">
+    <input type="text" v-model="newAnswer.users">
+    <button type="submit">Save</button>
+    </form>
   </div>
+ 
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+
+import firebase from '../firebase';
+let answersRef = firebase.database().ref('answers');
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+  data(){
+    return{
+      newAnswer:{
+        answers:'',
+        answersPerDay:'',
+        questions:'',
+        studyEvents:'',
+        users:''
+      }
+      
+      }
+    },
+    firebase(){
+      return {
+        answers: answersRef
+      }
+    },
+  methods:{
+    addAnswer(){
+      answersRef.push(this.newAnswer)
+      
+    }
 }
+}
+
+
 </script>
+
